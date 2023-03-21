@@ -8,7 +8,9 @@ This app tackles the problem by allowing users to be able to better keep track o
 what they have. The user can keep track of the expiration date and for some more sensitive foods
 that are better kept track by their buy date, it is also possible.
 
+
 Framework: Flutter
+
 Language: Dart
 
 Current features include:
