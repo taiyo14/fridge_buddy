@@ -32,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  Food item = Food('', '', DateTime(0), DateTime(0), '', false);
+  Food item = Food.fill('', '', DateTime(0), DateTime(0), '', false);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -63,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     decodeList();
-    setState(() {});
 
     _tabController = TabController(
       initialIndex: 0,
@@ -82,14 +81,14 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Fridge Buddy"),
+        title: const Text("Fridge Buddy"),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {},
           ),
           PopupMenuButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onSelected: (value) => setState(() {
               switch (value) {
                 case 'settings':
@@ -129,197 +128,57 @@ class _MyHomePageState extends State<MyHomePage>
       body: TabBarView(controller: _tabController, children: [
         Column(
           children: [
-            if (foodList.length > 0)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: foodList.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return Card(
-                        margin: EdgeInsets.all(15.0),
-                        child: ListTile(
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(foodList[index].name)),
-                                Expanded(child: Text(foodList[index].amount))
-                              ],
-                            ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('${foodList[index].daysUntilExp} days until expiration on ${foodList[index].expDate?.month}/${foodList[index].expDate?.day}${foodList[index].expDate?.year}'),
-                                Text('${foodList[index].age} days old, bought on ${foodList[index].dayBought?.month}/${foodList[index].dayBought?.day}${foodList[index].dayBought?.year}')
-                              ],
-                            ),
-                          ),
-                          trailing: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Visibility(
-                                visible: foodList[index].favorite,
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              )),
-                        ));
-                  },
-                ),
-              )
+            if(foodList.isNotEmpty)
+              displayCards(foodList)
             else
-              Visibility(
-                child: Text("No product"),
-                visible: false,
+              const Expanded(
+                child: Center(
+                  widthFactor: 0.5,
+                  heightFactor: 0.5,
+                  child: Text("No product"),
+                ),
               )
           ],
         ),
         Column(
           children: [
-            if (fridgeList.length > 0)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: fridgeList.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return Card(
-                        margin: EdgeInsets.all(15.0),
-                        child: ListTile(
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(fridgeList[index].name)),
-                                Expanded(child: Text(fridgeList[index].amount))
-                              ],
-                            ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('${fridgeList[index].daysUntilExp} days until expiration on ${fridgeList[index].expDate?.month}/${fridgeList[index].expDate?.day}${fridgeList[index].expDate?.year}'),
-                                Text('${fridgeList[index].age} days old, bought on ${fridgeList[index].dayBought?.month}/${fridgeList[index].dayBought?.day}${fridgeList[index].dayBought?.year}')
-                              ],
-                            ),
-                          ),
-                          trailing: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Visibility(
-                                visible: fridgeList[index].favorite,
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              )),
-                        ));
-                  },
-                ),
-              )
+            if(fridgeList.isNotEmpty)
+              displayCards(fridgeList)
             else
-              Visibility(
-                child: Text("No product"),
-                visible: false,
+              const Expanded(
+                child: Center(
+                  widthFactor: 0.5,
+                  heightFactor: 0.5,
+                  child: Text("No product"),
+                ),
               )
           ],
         ),
         Column(
           children: [
-            if (freezerList.length > 0)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: freezerList.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return Card(
-                        margin: EdgeInsets.all(15.0),
-                        child: ListTile(
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(freezerList[index].name)),
-                                Expanded(child: Text(freezerList[index].amount))
-                              ],
-                            ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('${freezerList[index].daysUntilExp} days until expiration on ${freezerList[index].expDate?.month}/${freezerList[index].expDate?.day}${freezerList[index].expDate?.year}'),
-                                Text('${freezerList[index].age} days old, bought on ${freezerList[index].dayBought?.month}/${freezerList[index].dayBought?.day}${freezerList[index].dayBought?.year}')
-                              ],
-                            ),
-                          ),
-                          trailing: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Visibility(
-                                visible: freezerList[index].favorite,
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              )),
-                        ));
-                  },
-                ),
-              )
+            if(freezerList.isNotEmpty)
+              displayCards(freezerList)
             else
-              Visibility(
-                child: Text("No product"),
-                visible: false,
+              const Expanded(
+                child: Center(
+                  widthFactor: 0.5,
+                  heightFactor: 0.5,
+                  child: Text("No product"),
+                ),
               )
           ],
         ),
         Column(
           children: [
-            if (pantryList.length > 0)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: pantryList.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return Card(
-                        margin: EdgeInsets.all(15.0),
-                        child: ListTile(
-                          title: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(pantryList[index].name)),
-                                Expanded(child: Text(pantryList[index].amount))
-                              ],
-                            ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('${pantryList[index].daysUntilExp} days until expiration on ${pantryList[index].expDate?.month}/${pantryList[index].expDate?.day}${pantryList[index].expDate?.year}'),
-                                Text('${pantryList[index].age} days old, bought on ${pantryList[index].dayBought?.month}/${pantryList[index].dayBought?.day}${pantryList[index].dayBought?.year}')
-                              ],
-                            ),
-                          ),
-                          trailing: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Visibility(
-                                visible: pantryList[index].favorite,
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              )),
-                        ));
-                  },
-                ),
-              )
+            if(pantryList.isNotEmpty)
+              displayCards(pantryList)
             else
-              Visibility(
-                child: Text("No product"),
-                visible: false,
+              const Expanded(
+                child: Center(
+                  widthFactor: 0.5,
+                  heightFactor: 0.5,
+                  child: Text("No product"),
+                ),
               )
           ],
         ),
@@ -331,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage>
           Container(
             margin: EdgeInsets.only(left: 35),
             child: PopupMenuButton(
-              icon: Icon(Icons.filter_list_sharp),
+              icon: const Icon(Icons.filter_list_sharp),
               onSelected: (value) => setState(() {
                 _selectedView = value.toString();
                 _sortFoodList();
@@ -345,22 +204,22 @@ class _MyHomePageState extends State<MyHomePage>
                 CheckedPopupMenuItem(
                   checked: _selectedView == 'name',
                   value: 'name',
-                  child: Text('Name'),
+                  child: const Text('Name'),
                 ),
                 CheckedPopupMenuItem(
                   checked: _selectedView == 'age',
                   value: 'age',
-                  child: Text('Age'),
+                  child: const Text('Age'),
                 ),
                 CheckedPopupMenuItem(
                   checked: _selectedView == 'expDate',
                   value: 'expDate',
-                  child: Text('Exp Date'),
+                  child: const Text('Exp Date'),
                 ),
                 CheckedPopupMenuItem(
                   checked: _selectedView == 'favorite',
                   value: 'favorite',
-                  child: Text('Favorite'),
+                  child: const Text('Favorite'),
                 ),
               ],
             ),
@@ -369,7 +228,6 @@ class _MyHomePageState extends State<MyHomePage>
           FloatingActionButton(
             onPressed: () {
               _navigateAndDisplaySelection(context);
-              setState(() {});
             },
             tooltip: 'Add new item',
             child: const Icon(Icons.add),
@@ -380,93 +238,158 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
+  Expanded displayCards(List<Food> list) {
+    try {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (BuildContext context, index) {
+             return Card(
+                margin: EdgeInsets.all(15.0),
+                child: ListTile(
+                  onTap: () {
+
+                  },
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(list[index].name)),
+                        Expanded(child: Text(list[index].amount))
+                      ],
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${list[index].daysUntilExp} days until expiration on ${list[index].expDate?.month}/${list[index].expDate?.day}${list[index].expDate?.year}'),
+                        Text('${list[index].age} days old, bought on ${list[index].dayBought?.month}/${list[index].dayBought?.day}${list[index].dayBought?.year}')
+                      ],
+                    ),
+                  ),
+                  trailing: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Visibility(
+                        visible: list[index].favorite,
+                        child: Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        ),
+                      )),
+                ));
+          },
+        ),
+      );
+    } catch (e) {
+      throw new Exception("Empty list");
+    }
+
+  }
+
   void _navigateAndDisplaySelection(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const editing_page()),
     );
 
-    setState(() {
-      widget.item = result;
-      foodList.add(result);
-      _sortFoodList();
-      encodeList();
-    });
+    if(!result.isEmpty) {
+      setState(() {
+        widget.item = result;
+        foodList.add(result);
+        _sortFoodList();
+        switch(result.location) {
+          case 'Fridge': {fridgeList.add(result);}
+          break;
+          case 'Freezer': {freezerList.add(result);}
+          break;
+          case 'Pantry': {pantryList.add(result);}
+          break;
+        }
+        encodeList(result);
+      });
+    }
   }
 
   _clearData() async {
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     sharedPref.remove('All');
+    sharedPref.remove('Fridge');
+    sharedPref.remove('Freezer');
+    sharedPref.remove('Pantry');
+    setState(() {
+      foodList = [];
+      fridgeList = [];
+      freezerList = [];
+      pantryList = [];
+    });
   }
 
-  Future<void> encodeList() async {
+  Future<void> encodeList(Food item) async {
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     await sharedPref.setString('All', jsonEncode(foodList));
-    setState(() {});
+    switch(item.location) {
+      case 'Fridge': {await sharedPref.setString('Fridge', jsonEncode(fridgeList));}
+        break;
+      case 'Freezer': {await sharedPref.setString('Freezer', jsonEncode(freezerList));}
+        break;
+      case 'Pantry': {await sharedPref.setString('Pantry', jsonEncode(pantryList));}
+        break;
+    }
   }
 
   Future<void> decodeList() async {
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    String? userPref = sharedPref.getString('All');
-    if (userPref != null) {
-      foodList =
-          (json.decode(userPref) as List).map((i) => Food.fromJson(i)).toList();
-      _sortFoodList();
-      for (int i = 1; i <= storageKey.length - 1; i++) {
-        switch (storageKey[i]) {
-          case 'Fridge':
-            {
-              //fridgeList.clear();
-              for (int j = 0; j <= foodList.length - 1; j++) {
-                if (foodList[j].location == storageKey[i])
-                  fridgeList.add(foodList[j]);
-              }
-            }
-            break;
-          case 'Freezer':
-            {
-              // freezerList.clear();
-              for (int j = 0; j <= foodList.length - 1; j++) {
-                if (foodList[j].location == storageKey[i])
-                  freezerList.add(foodList[j]);
-              }
-            }
-            break;
-          case 'Pantry':
-            {
-              // pantryList.clear();
-              for (int j = 0; j <= foodList.length - 1; j++) {
-                if (foodList[j].location == storageKey[i])
-                  pantryList.add(foodList[j]);
-              }
-            }
-            break;
-        }
+    List<List<Food>> temp2d = [];
+    for(int i=0; i<storageKey.length; i++){
+      List<Food> temp = [];
+      String? userPref = sharedPref.getString(storageKey[i]);
+      if(userPref != null) {
+        temp = (json.decode(userPref) as List).map((j) => Food.fromJson(j)).toList();
+        temp2d.add(temp);
       }
+    }
+    if(temp2d.isNotEmpty) {
+      setState(() {
+        foodList = List.from(temp2d[0]);
+        fridgeList = List.from(temp2d[1]);
+        freezerList = List.from(temp2d[2]);
+        pantryList = List.from(temp2d[3]);
+      });
     }
   }
 
   _sortFoodList() {
     switch (_selectedView) {
-      case 'name':
+      case 'name':{
         foodList.sort((a, b) => a.name.compareTo(b.name));
+        fridgeList.sort((a, b) => a.name.compareTo(b.name));
+        freezerList.sort((a, b) => a.name.compareTo(b.name));
+        pantryList.sort((a, b) => a.name.compareTo(b.name));
+      }
+
         break;
 
       case 'age':
         foodList.sort((a, b) => a.age.compareTo(b.age));
+        fridgeList.sort((a, b) => a.age.compareTo(b.age));
+        freezerList.sort((a, b) => a.age.compareTo(b.age));
+        pantryList.sort((a, b) => a.age.compareTo(b.age));
         break;
 
       case 'expDate':
         foodList.sort((a, b) => a.daysUntilExp.compareTo(b.daysUntilExp));
+        fridgeList.sort((a, b) => a.daysUntilExp.compareTo(b.daysUntilExp));
+        freezerList.sort((a, b) => a.daysUntilExp.compareTo(b.daysUntilExp));
+        pantryList.sort((a, b) => a.daysUntilExp.compareTo(b.daysUntilExp));
         break;
 
       case 'favorite':
-        foodList.sort((a, b) {
-          if (b.favorite) {
-            return 1;
-          }
-          return -1;
-        });
+        foodList.sort((a, b) => b.favorite ? 1 : -1);
+        fridgeList.sort((a, b) => b.favorite ? 1 : -1);
+        freezerList.sort((a, b) => b.favorite ? 1 : -1);
+        pantryList.sort((a, b) => b.favorite ? 1 : -1);
         break;
     }
   }

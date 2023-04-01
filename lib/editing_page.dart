@@ -166,33 +166,31 @@ class _editing_pageState extends State<editing_page> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        child: Row(
-          children: [
-            Expanded(
-              flex: 50,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[Icon(Icons.backspace), Text("Cancel")],
-                  )),
+      bottomNavigationBar: Row(
+        children: [
+          Expanded(child: SizedBox(
+            height: 45,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pop(context, Food());
+              },
+              icon: Icon(Icons.backspace),
+              label: Text("Cancel"),
             ),
-            Expanded(
-              flex: 50,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context, Food(nameController.text,amountController.text,testing1,testing2,dropdownValue,favorite));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[Icon(Icons.check), Text("OK")],
-                  )),
+          ),
+          ),
+          Expanded(child: SizedBox(
+            height: 45,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pop(context, Food.fill(nameController.text,amountController.text,testing1,testing2,dropdownValue,favorite));
+              },
+              icon: Icon(Icons.check),
+              label: Text("OK"),
             ),
-          ],
-        ),
+          ),
+          )
+        ],
       ),
     );
   }

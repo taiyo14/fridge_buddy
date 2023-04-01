@@ -10,8 +10,11 @@ class Food{
   int daysUntilExp = 0;
   int age = 0;
   bool favorite = false;
+  bool isEmpty = true;
 
-  Food(String name,String amount,DateTime expDate,DateTime dayBought,String location, bool favorite) {
+  Food();
+
+  Food.fill(String name,String amount,DateTime expDate,DateTime dayBought,String location, bool favorite) {
     this.name = name;
     this.amount = amount;
     this.expDate = expDate;
@@ -20,6 +23,7 @@ class Food{
     this.favorite = favorite;
     this.daysUntilExp = calculateDaysBetween(DateTime.now(), expDate);
     this.age = calculateDaysBetween(dayBought, DateTime.now());
+    this.isEmpty = false;
   }
 
   int calculateDaysBetween(DateTime from, DateTime to){
@@ -48,7 +52,5 @@ class Food{
     'daysUntilExp': daysUntilExp,
     'age': age,
   };
-
-
 
 }
