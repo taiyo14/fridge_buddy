@@ -31,6 +31,7 @@ class _editing_pageState extends State<editing_page> {
     expDateController = TextEditingController(text: DateFormat('MM-dd-yyyy').format(widget.fooditem.expDate));
     buyDateController = TextEditingController(text: DateFormat('MM-dd-yyyy').format(widget.fooditem.dayBought));
     dropdownValue = widget.fooditem.location;
+    favorite = widget.fooditem.favorite;
   }
 
   @override
@@ -103,12 +104,11 @@ class _editing_pageState extends State<editing_page> {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2010),
                             lastDate: DateTime(2050));
-
+                        
                         if (pickedDate != null) {
                           setState(() {
                             expDateController.text = DateFormat('MM-dd-yyyy').format(pickedDate);
                           });
-                          expDate = pickedDate;
                         } else {
                           print("Date is not selected");
                         }
@@ -141,7 +141,6 @@ class _editing_pageState extends State<editing_page> {
                           setState(() {
                             buyDateController.text = DateFormat('MM-dd-yyyy').format(pickedDate);;
                           });
-                          buyDate = pickedDate;
                         } else {
                           print("Date is not selected");
                         }
@@ -195,7 +194,7 @@ class _editing_pageState extends State<editing_page> {
             height: 45,
             child: ElevatedButton.icon(
               onPressed: () {
-                Navigator.pop(context, Food.fill(nameController.text,amountController.text,expDate,buyDate,dropdownValue,favorite));
+                Navigator.pop(context, Food.fill(nameController.text,amountController.text,formatter.parse(expDateController.text),formatter.parse(buyDateController.text),dropdownValue,favorite));
               },
               icon: const Icon(Icons.check),
               label: const Text("OK"),

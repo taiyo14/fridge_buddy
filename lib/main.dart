@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Home Page'),
@@ -245,40 +244,45 @@ class _MyHomePageState extends State<MyHomePage>
           itemCount: list.length,
           itemBuilder: (BuildContext context, index) {
              return Card(
-                margin: EdgeInsets.all(15.0),
-                child: ListTile(
-                  onTap: () {
-                    _navigateAndDisplaySelection(context, list[index]);
-                  },
-                  title: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(child: Text(list[index].name)),
-                        Expanded(child: Text(list[index].amount))
-                      ],
-                    ),
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Expires on ${list[index].expDate.month}/${list[index].expDate.day}/${list[index].expDate.year}, (${list[index].daysUntilExp} days left)'),
-                        Text('Bought on ${list[index].dayBought.month}/${list[index].dayBought.day}/${list[index].dayBought.year}, (${list[index].age} days old)')
-                      ],
-                    ),
-                  ),
-                  trailing: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Visibility(
-                        visible: list[index].favorite,
-                        child: const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                      )),
-                ));
+               child: InkWell(
+                 onTap: () {
+                   _navigateAndDisplaySelection(context, list[index]);
+                 },
+                 child: Container(
+                   margin: EdgeInsets.fromLTRB(0, 12, 12, 12),
+                   child: Row(
+                     children: [
+                       Expanded(flex: 2, child: Container(
+                         child: Icon(Icons.add_photo_alternate_outlined),
+                       )),
+                       Expanded(flex: 7, child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Text(list[index].name, style: TextStyle(fontSize: 16),),
+                           Text(list[index].amount, style: TextStyle(fontSize: 16),),
+                           Text('Expires on ${list[index].expDate.month}/${list[index].expDate.day}/${list[index].expDate.year}, (${list[index].daysUntilExp} days left)',
+                             style: TextStyle(fontSize: 12, color: Colors.grey),),
+                           Text('Bought on ${list[index].dayBought.month}/${list[index].dayBought.day}/${list[index].dayBought.year}, (${list[index].age} days old)',
+                             style: TextStyle(fontSize: 12, color: Colors.grey),)
+                         ],
+                       )),
+                       Expanded(flex: 1, child: Column(
+                         children: [
+                           Visibility(
+                             visible: list[index].favorite,
+                             child: const Icon(
+                               Icons.favorite,
+                               color: Colors.red,
+                             ),
+                           ),
+                           Text('')
+                         ],
+                       ))
+                     ],
+                   ),
+                 ),
+               ),
+             );
           },
         ),
       );
@@ -407,3 +411,4 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 }
+
