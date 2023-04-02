@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 35),
+            margin: const EdgeInsets.only(left: 35),
             child: PopupMenuButton(
               icon: const Icon(Icons.filter_list_sharp),
               onSelected: (value) => setState(() {
@@ -224,10 +224,10 @@ class _MyHomePageState extends State<MyHomePage>
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           FloatingActionButton(
             onPressed: () {
-              _navigateAndDisplaySelection(context);
+              _navigateAndDisplaySelection(context, Food());
             },
             tooltip: 'Add new item',
             child: const Icon(Icons.add),
@@ -248,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage>
                 margin: EdgeInsets.all(15.0),
                 child: ListTile(
                   onTap: () {
-
+                    _navigateAndDisplaySelection(context, list[index]);
                   },
                   title: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -264,8 +264,8 @@ class _MyHomePageState extends State<MyHomePage>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${list[index].daysUntilExp} days until expiration on ${list[index].expDate?.month}/${list[index].expDate?.day}${list[index].expDate?.year}'),
-                        Text('${list[index].age} days old, bought on ${list[index].dayBought?.month}/${list[index].dayBought?.day}${list[index].dayBought?.year}')
+                        Text('Expires on ${list[index].expDate.month}/${list[index].expDate.day}/${list[index].expDate.year}, (${list[index].daysUntilExp} days left)'),
+                        Text('Bought on ${list[index].dayBought.month}/${list[index].dayBought.day}/${list[index].dayBought.year}, (${list[index].age} days old)')
                       ],
                     ),
                   ),
@@ -273,7 +273,7 @@ class _MyHomePageState extends State<MyHomePage>
                       padding: const EdgeInsets.all(8.0),
                       child: Visibility(
                         visible: list[index].favorite,
-                        child: Icon(
+                        child: const Icon(
                           Icons.favorite,
                           color: Colors.red,
                         ),
@@ -283,22 +283,21 @@ class _MyHomePageState extends State<MyHomePage>
         ),
       );
     } catch (e) {
-      throw new Exception("Empty list");
+      throw Exception("Empty list");
     }
 
   }
 
-  void _navigateAndDisplaySelection(BuildContext context) async {
+  void _navigateAndDisplaySelection(BuildContext context, Food fooditem) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const editing_page()),
+      MaterialPageRoute(builder: (context) => editing_page(fooditem: fooditem,)),
     );
 
     if(!result.isEmpty) {
       setState(() {
         widget.item = result;
         foodList.add(result);
-        _sortFoodList();
         switch(result.location) {
           case 'Fridge': {fridgeList.add(result);}
           break;
@@ -307,6 +306,20 @@ class _MyHomePageState extends State<MyHomePage>
           case 'Pantry': {pantryList.add(result);}
           break;
         }
+
+        if(!fooditem.isEmpty) {
+          foodList.remove(fooditem);
+          switch(fooditem.location) {
+            case 'Fridge': {fridgeList.remove(fooditem);}
+            break;
+            case 'Freezer': {freezerList.remove(fooditem);}
+            break;
+            case 'Pantry': {pantryList.remove(fooditem);}
+            break;
+          }
+        }
+
+        _sortFoodList();
         encodeList(result);
       });
     }

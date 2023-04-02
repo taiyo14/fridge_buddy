@@ -3,32 +3,47 @@ import 'package:intl/intl.dart';
 import 'Food.dart';
 
 class editing_page extends StatefulWidget {
-  const editing_page({Key? key}) : super(key: key);
+  const editing_page({Key? key, required this.fooditem}) : super(key: key);
 
   @override
   _editing_pageState createState() => _editing_pageState();
+
+  final Food fooditem;
 }
 
 class _editing_pageState extends State<editing_page> {
   bool favorite = false;
-  DateTime testing1 = DateTime(0);
-  DateTime testing2 = DateTime(0);
-  var nameController = TextEditingController();
-  var amountController = TextEditingController();
-  var expDateController = TextEditingController();
-  var buyDateController = TextEditingController();
-  String dropdownValue = 'Fridge'; // contains the value inside the dropdown menu
+  DateTime expDate = DateTime.now();
+  DateTime buyDate = DateTime.now();
+  late TextEditingController nameController;
+  late TextEditingController amountController;
+  late TextEditingController expDateController;
+  late TextEditingController buyDateController;
+  late String dropdownValue; // contains the value inside the dropdown menu
+
+  final DateFormat formatter = DateFormat('MM-dd-yyyy');
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.fooditem.name);
+    amountController = TextEditingController(text: widget.fooditem.amount);
+    expDateController = TextEditingController(text: DateFormat('MM-dd-yyyy').format(widget.fooditem.expDate));
+    buyDateController = TextEditingController(text: DateFormat('MM-dd-yyyy').format(widget.fooditem.dayBought));
+    dropdownValue = widget.fooditem.location;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(onPressed: () {Navigator.pop(context, Food());},),
         actions: [
           IconButton(
               iconSize: 30.0,
               icon: favorite == true
-                  ? Icon(Icons.favorite, color: Colors.red,)
-                  : Icon(Icons.favorite_border),
+                  ? const Icon(Icons.favorite, color: Colors.red,)
+                  : const Icon(Icons.favorite_border),
               onPressed: () {
                 setState(() {
                   favorite = !favorite;
@@ -42,7 +57,7 @@ class _editing_pageState extends State<editing_page> {
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   "Product Name: ",
                   style: TextStyle(fontSize: 16),
                 ),
@@ -56,7 +71,7 @@ class _editing_pageState extends State<editing_page> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Amount: ",
                   style: TextStyle(fontSize: 16),
                 ),
@@ -70,7 +85,7 @@ class _editing_pageState extends State<editing_page> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Expiration Date: ",
                   style: TextStyle(fontSize: 16),
                 ),
@@ -78,7 +93,7 @@ class _editing_pageState extends State<editing_page> {
                     width: 150,
                     child: TextField(
                       controller: expDateController, //editing controller of this TextField
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today), //icon of text field
                       ),
                       readOnly: true, //set it true, so that user will not able to edit text
@@ -90,11 +105,10 @@ class _editing_pageState extends State<editing_page> {
                             lastDate: DateTime(2050));
 
                         if (pickedDate != null) {
-
                           setState(() {
                             expDateController.text = DateFormat('MM-dd-yyyy').format(pickedDate);
                           });
-                          testing1 = DateTime(pickedDate.year,pickedDate.month,pickedDate.day);
+                          expDate = pickedDate;
                         } else {
                           print("Date is not selected");
                         }
@@ -104,7 +118,7 @@ class _editing_pageState extends State<editing_page> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Buy Date: ",
                   style: TextStyle(fontSize: 16),
                 ),
@@ -112,7 +126,7 @@ class _editing_pageState extends State<editing_page> {
                     width: 150,
                     child: TextField(
                       controller: buyDateController, //editing controller of this TextField
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         icon: Icon(Icons.calendar_today), //icon of text field
                       ),
                       readOnly: true, //set it true, so that user will not able to edit text
@@ -124,12 +138,10 @@ class _editing_pageState extends State<editing_page> {
                             lastDate: DateTime.now());
 
                         if (pickedDate != null) {
-
                           setState(() {
                             buyDateController.text = DateFormat('MM-dd-yyyy').format(pickedDate);;
-
                           });
-                          testing2 = DateTime(pickedDate.year,pickedDate.month,pickedDate.day);
+                          buyDate = pickedDate;
                         } else {
                           print("Date is not selected");
                         }
@@ -139,7 +151,7 @@ class _editing_pageState extends State<editing_page> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Location: ",
                   style: TextStyle(fontSize: 16),
                 ),
@@ -174,8 +186,8 @@ class _editing_pageState extends State<editing_page> {
               onPressed: () {
                 Navigator.pop(context, Food());
               },
-              icon: Icon(Icons.backspace),
-              label: Text("Cancel"),
+              icon: const Icon(Icons.backspace),
+              label: const Text("Cancel"),
             ),
           ),
           ),
@@ -183,10 +195,10 @@ class _editing_pageState extends State<editing_page> {
             height: 45,
             child: ElevatedButton.icon(
               onPressed: () {
-                Navigator.pop(context, Food.fill(nameController.text,amountController.text,testing1,testing2,dropdownValue,favorite));
+                Navigator.pop(context, Food.fill(nameController.text,amountController.text,expDate,buyDate,dropdownValue,favorite));
               },
-              icon: Icon(Icons.check),
-              label: Text("OK"),
+              icon: const Icon(Icons.check),
+              label: const Text("OK"),
             ),
           ),
           )

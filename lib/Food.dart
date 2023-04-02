@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Food{
   String name = '';
   String amount = '';
-  DateTime? expDate = null;
-  DateTime? dayBought = null;
-  String location = '';
+  DateTime expDate = DateTime.now();
+  DateTime dayBought = DateTime.now();
+  String location = 'Fridge';
   int daysUntilExp = 0;
   int age = 0;
   bool favorite = false;
@@ -14,16 +15,10 @@ class Food{
 
   Food();
 
-  Food.fill(String name,String amount,DateTime expDate,DateTime dayBought,String location, bool favorite) {
-    this.name = name;
-    this.amount = amount;
-    this.expDate = expDate;
-    this.dayBought = dayBought;
-    this.location = location;
-    this.favorite = favorite;
-    this.daysUntilExp = calculateDaysBetween(DateTime.now(), expDate);
-    this.age = calculateDaysBetween(dayBought, DateTime.now());
-    this.isEmpty = false;
+  Food.fill(this.name,this.amount,this.expDate,this.dayBought,this.location, this.favorite) {
+    daysUntilExp = calculateDaysBetween(DateTime.now(), expDate);
+    age = calculateDaysBetween(dayBought, DateTime.now());
+    isEmpty = false;
   }
 
   int calculateDaysBetween(DateTime from, DateTime to){
@@ -45,8 +40,8 @@ class Food{
   Map<String, dynamic> toJson() => {
     'name': name,
     'amount': amount,
-    'expDate': expDate?.toIso8601String(),
-    'dayBought': dayBought?.toIso8601String(),
+    'expDate': expDate.toIso8601String(),
+    'dayBought': expDate.toIso8601String(),
     'location': location,
     'favorite': favorite,
     'daysUntilExp': daysUntilExp,
