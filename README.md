@@ -1,26 +1,29 @@
-Fridge Buddy
+# Fridge Buddy
 
 In this project, my aim was to tackle one of the more neglected problem of food waste.
-Since we have an abundance of food, we tend to not think  much about
-throwing food away. However, small actions add up and so does the environmental  impact.
+Since we have an abundance of food, we tend to not think too much about
+throwing food away. Many times what happens is that groceries get stacked up and hidden away, eventually forgotten and spoiled. However, small actions add up and so does the environmental  impact.
 
-This app tackles the problem by allowing users to be able to better keep track of their food and
-what they have. The user can keep track of the expiration date and for some more sensitive foods
-that are better kept track by their buy date, it is also possible.
+This app tackles the problem by allowing users to easily keep track of their food from the convenience of their phones. The user can track the expiration date and the buy date for some more sensitive foods.
 
+One especially attractive use case is foods in the freezer. Reorganizing the freezer is such a tedious task due to your hands getting too cold. With Fridge Buddy, you can just see a list of everything in the fridge as a reminder, instead of going through the whole freezer.
 
-Framework: Flutter
+## Details
 
-Language: Dart
+**Framework:** Flutter
 
-Current features include:
+**Language:** Dart
+
+**Current features include:**
 - Sorting entries by Name, Age, Expiration date, and favorites
 - Responsive data entry and edits achieved through Stateful widgets
 - Locally stored data through SharedPreferences
 
-Work in progress:
+**Work in progress:**
 - Uploading images
 - Input verification
+- Recipe suggestions
+- Shopping list
 
 <p float="left">
   <img src="https://user-images.githubusercontent.com/52620214/229645002-e0d48f7a-6524-4c77-8b13-85373acd8d47.png" width="270" height="570"/>
